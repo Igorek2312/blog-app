@@ -60,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(user.getEmail());
-            message.setFrom(environment.getProperty("email.username"));
+            message.setFrom(environment.getProperty("EMAIL_USERNAME"));
 
             Map<String, String> model = new HashMap<>();
             model.put("activationUrl", originUrl + "/activate?key=" + user.getActivationKey());
