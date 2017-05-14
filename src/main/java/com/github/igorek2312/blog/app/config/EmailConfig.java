@@ -23,10 +23,10 @@ public class EmailConfig {
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        javaMailSender.setHost(environment.getProperty("email.host"));
+        javaMailSender.setHost(environment.getProperty("EMAIL_HOST"));
         javaMailSender.setPort(587);
-        javaMailSender.setUsername(environment.getProperty("email.username"));
-        javaMailSender.setPassword(environment.getProperty("email.password"));
+        javaMailSender.setUsername(environment.getProperty("EMAIL_USERNAME"));
+        javaMailSender.setPassword(environment.getProperty("EMAIL_PASSWORD"));
         javaMailSender.getJavaMailProperties().setProperty("mail.smtp.auth", "true");
         javaMailSender.getJavaMailProperties().setProperty("mail.smtp.starttls.enable", "true");
         return javaMailSender;

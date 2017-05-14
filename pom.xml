@@ -128,17 +128,44 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>4.2.0</version>
-                <configuration>
-                    <url>jdbc:mysql://localhost:3306/blog-app</url>
-                    <user>root</user>
-                    <password>1234</password>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <version>4.2.0</version>
+                        <configuration>
+                            <url>jdbc:mysql://localhost:3306/blog-app</url>
+                            <user>root</user>
+                            <password>1234</password>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>heroku</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <version>4.2.0</version>
+                        <configuration>
+                            <url>${env.JDBC_URL}</url>
+                            <user>${env.JDBC_USERNAME}</user>
+                            <password>${env.JDBC_PASSWORD}</password>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
