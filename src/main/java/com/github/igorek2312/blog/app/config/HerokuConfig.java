@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
  * @author Igor Rybak
  */
 @Configuration
-@Profile("heroku")
+@Profile({"heroku", "jawsdb"})
 public class HerokuConfig {
     @Bean
     public DriverManagerDataSource dataSource() throws URISyntaxException {
