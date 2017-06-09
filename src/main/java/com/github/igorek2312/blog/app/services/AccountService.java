@@ -1,7 +1,6 @@
 package com.github.igorek2312.blog.app.services;
 
 import com.github.igorek2312.blog.app.model.User;
-import com.github.igorek2312.blog.app.transfer.SignUpForm;
 
 import java.util.Optional;
 
@@ -9,7 +8,7 @@ import java.util.Optional;
  * @author Igor Rybak
  */
 public interface AccountService {
-    User signUp(SignUpForm user);
+    void signUp(User user);
 
     void activate(String activationKey);
 

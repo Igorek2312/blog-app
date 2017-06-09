@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = PasswordsEqualConstraintValidator.class)
 public @interface ConfirmPasswordConstraint {
-    String message();
+    String message() default "{ConfirmPasswordConstraint}";
 
     Class<?>[] groups() default {};
 

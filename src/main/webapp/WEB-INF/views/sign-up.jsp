@@ -11,7 +11,7 @@
                     <spring:message code="label.fill.in.fields"/>
                 </div>
                 <div class="panel-body">
-                    <form:form modelAttribute="signUpForm" action="/sign-up" method="post" role="form"
+                    <form:form modelAttribute="user" action="/sign-up" method="post" role="form"
                                class="form-horizontal" novalidate="">
                         <spring:bind path="username">
                             <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -46,7 +46,7 @@
                             <div class="form-group ${status.error ? 'has-error' : ''}">
                                 <div class="col-sm-12">
                                     <spring:message code="label.confirm.passwrod" var="confirmPassword"/>
-                                    <form:input path="confirmPassword" type="password" class="form-control"
+                                    <form:input path="confirmedPassword" type="password" class="form-control"
                                                 placeholder="${confirmPassword}"/>
                                 </div>
                                 <spring:hasBindErrors name="signUpForm">

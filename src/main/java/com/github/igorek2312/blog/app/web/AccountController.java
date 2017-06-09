@@ -3,7 +3,6 @@ package com.github.igorek2312.blog.app.web;
 import com.github.igorek2312.blog.app.model.User;
 import com.github.igorek2312.blog.app.services.AccountService;
 import com.github.igorek2312.blog.app.services.EmailService;
-import com.github.igorek2312.blog.app.transfer.SignUpForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,9 +32,9 @@ public class AccountController {
         this.emailService = emailService;
     }
 
-    @ModelAttribute("signUpForm")
-    public SignUpForm signUpForm() {
-        return new SignUpForm();
+    @ModelAttribute("user")
+    public User signUpForm() {
+        return new User();
     }
 
     @GetMapping("/sign-up")
@@ -45,14 +44,14 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public String signUp(
-            @Validated @ModelAttribute("signUpForm") SignUpForm form,
+            @Validated @ModelAttribute("user") User user,
             BindingResult result,
             HttpServletRequest request
     ) {
         if (result.hasErrors()) {
             return "sign-up";
         }
-        User user = accountService.signUp(form);
+        accountService.signUp(user);
         String originUrl = request.getHeader("Origin");
         emailService.sendActivationLetter(originUrl, user);
         return "redirect:login?letter_sent";

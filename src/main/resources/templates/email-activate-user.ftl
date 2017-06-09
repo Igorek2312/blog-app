@@ -4,6 +4,6 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <a href="${activationUrl}">Click on link to reset password.</a>
+    <a href="${activationUrl}">Click on link to activate account.</a>
 </body>
 </html>

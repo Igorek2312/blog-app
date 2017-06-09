@@ -5,7 +5,6 @@ import com.github.igorek2312.blog.app.model.Role;
 import com.github.igorek2312.blog.app.model.User;
 import com.github.igorek2312.blog.app.repositories.RoleRepository;
 import com.github.igorek2312.blog.app.repositories.UserRepository;
-import com.github.igorek2312.blog.app.transfer.SignUpForm;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,13 +39,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User signUp(SignUpForm form) {
+    public void signUp(User user) {
         Role role = roleRepository.findByName("ROLE_USER");
-        User user = modelMapper.map(form, User.class);
         user.encodePassword(passwordEncoder::encode);
         user.setActivationKey(UUID.randomUUID().toString());
         user.getRoles().add(role);
-        return userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -72,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
     public void resetPassword(String resetKey, String password) {
         User user = userRepository.findByResetKey(resetKey)
                 .orElseThrow(() -> new NotFoundException("error.no.user.with.such.reset.key"));
-        user.setPassword(password);
+        user.setPasswordHash(password);
         user.encodePassword(passwordEncoder::encode);
         userRepository.saveAndFlush(user);
     }

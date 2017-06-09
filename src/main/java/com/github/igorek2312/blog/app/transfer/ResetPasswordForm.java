@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author Igor Rybak
  */
-@ConfirmPasswordConstraint(message = "{ConfirmPasswordConstraint}")
+@ConfirmPasswordConstraint
 public class ResetPasswordForm implements ConfirmPassword {
     @Length(min = 4, max = 30)
     @NotBlank

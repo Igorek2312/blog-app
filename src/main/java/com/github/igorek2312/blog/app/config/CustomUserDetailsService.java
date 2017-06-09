@@ -17,7 +17,7 @@ import java.util.Collection;
  */
 @Service
 @Transactional
-public class CustomUserDetailsService implements UserDetailsService{
+public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService{
         return new CustomUserDetails(user);
     }
 
-    private static class CustomUserDetails extends User implements UserDetails{
+    private static class CustomUserDetails extends User implements UserDetails {
 
         public CustomUserDetails(User user) {
             super(user);
@@ -37,6 +37,11 @@ public class CustomUserDetailsService implements UserDetailsService{
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return getRoles();
+        }
+
+        @Override
+        public String getPassword() {
+            return getPasswordHash();
         }
 
         @Override

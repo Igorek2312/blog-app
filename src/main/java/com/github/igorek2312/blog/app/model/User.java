@@ -1,6 +1,16 @@
 package com.github.igorek2312.blog.app.model;
 
+import com.github.igorek2312.blog.app.reference.Constants;
+import com.github.igorek2312.blog.app.services.validation.ConfirmPasswordConstraint;
+import com.github.igorek2312.blog.app.services.validation.UniqueEmail;
+import com.github.igorek2312.blog.app.services.validation.UniqueUsername;
+import com.github.igorek2312.blog.app.transfer.ConfirmPassword;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -10,23 +20,43 @@ import java.util.function.Function;
  */
 @Entity
 @Table(name = "user")
-public class User {
+@ConfirmPasswordConstraint
+public class User implements ConfirmPassword {
     @Id
     @GeneratedValue
     private Integer id;
 
+    @Pattern(regexp = Constants.USERNAME_REGEX)
+    @Length(min = 1, max = 100)
+    @NotBlank
+    @UniqueUsername
     @Column(name = "username", length = 100, unique = true, nullable = false)
     private String username;
 
     @Column(name = "password_hash", length = 60, nullable = false)
+    private String passwordHash;
+
+    @Length(min = 4, max = 30)
+    @NotBlank
+    @Transient
     private String password;
 
+    @Transient
+    private String confirmedPassword;
+
+    @Length(max = 50)
+    @NotBlank
     @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
+    @Length(max = 50)
+    @NotBlank
     @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
 
+    @Email
+    @NotBlank
+    @UniqueEmail
     @Column(name = "email", length = 100, unique = true)
     private String email;
 
@@ -56,7 +86,7 @@ public class User {
     public User(User user) {
         this.id = user.id;
         this.username = user.username;
-        this.password = user.password;
+        this.passwordHash = user.passwordHash;
         this.activated = user.activated;
         this.firstName = user.firstName;
         this.lastName = user.lastName;
@@ -64,7 +94,12 @@ public class User {
     }
 
     public void encodePassword(Function<String, String> encoder) {
-        password = encoder.apply(password);
+        passwordHash = encoder.apply(password);
+    }
+
+    @Override
+    public boolean isConfirmedPasswordValid() {
+        return password.equals(confirmedPassword);
     }
 
     public Integer getId() {
@@ -83,12 +118,28 @@ public class User {
         this.username = username;
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String password) {
+        this.passwordHash = password;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmedPassword() {
+        return confirmedPassword;
+    }
+
+    public void setConfirmedPassword(String confirmedPassword) {
+        this.confirmedPassword = confirmedPassword;
     }
 
     public String getFirstName() {
@@ -154,5 +205,4 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
 }
