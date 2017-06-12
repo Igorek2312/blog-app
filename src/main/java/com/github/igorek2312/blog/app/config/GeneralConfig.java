@@ -3,6 +3,7 @@ package com.github.igorek2312.blog.app.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 /**
@@ -24,6 +25,7 @@ public class GeneralConfig {
     }
 
     @Bean
+    @Primary
     public ReloadableResourceBundleMessageSource validationMessageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/ValidationMessages");

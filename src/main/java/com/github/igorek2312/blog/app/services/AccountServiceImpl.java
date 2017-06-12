@@ -5,7 +5,6 @@ import com.github.igorek2312.blog.app.model.Role;
 import com.github.igorek2312.blog.app.model.User;
 import com.github.igorek2312.blog.app.repositories.RoleRepository;
 import com.github.igorek2312.blog.app.repositories.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,19 +22,16 @@ public class AccountServiceImpl implements AccountService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
-    private ModelMapper modelMapper;
 
     @Autowired
     public AccountServiceImpl(
             UserRepository userRepository,
             RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder,
-            ModelMapper modelMapper
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
     }
 
     @Override

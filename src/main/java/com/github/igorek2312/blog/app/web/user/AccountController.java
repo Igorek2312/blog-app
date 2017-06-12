@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.web;
+package com.github.igorek2312.blog.app.web.user;
 
 import com.github.igorek2312.blog.app.model.User;
 import com.github.igorek2312.blog.app.services.AccountService;
@@ -19,16 +19,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class AccountController {
-    private AccountService accountService;
-    private EmailService emailService;
+    private final AccountService accountService;
+    private final EmailService emailService;
 
     @Autowired
-    public void setAccountService(AccountService accountService) {
+    public AccountController(AccountService accountService, EmailService emailService) {
         this.accountService = accountService;
-    }
-
-    @Autowired
-    public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
     }
 
@@ -39,7 +35,7 @@ public class AccountController {
 
     @GetMapping("/sign-up")
     public String getSignUp() {
-        return "sign-up";
+        return "user/sign-up";
     }
 
     @PostMapping("/sign-up")
@@ -49,7 +45,7 @@ public class AccountController {
             HttpServletRequest request
     ) {
         if (result.hasErrors()) {
-            return "sign-up";
+            return "user/sign-up";
         }
         accountService.signUp(user);
         String originUrl = request.getHeader("Origin");

@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author Igor Rybak
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class NotFoundException extends CustomException {
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class ForbiddenException extends CustomException {
 
-    public NotFoundException(String messageCode, Object... messageArgs) {
-        super(messageCode, messageArgs);
+    public ForbiddenException() {
+        super(HttpStatus.FORBIDDEN.getReasonPhrase());
     }
 
     @Override
     public int getCode() {
-        return 404;
+        return 403;
     }
 }

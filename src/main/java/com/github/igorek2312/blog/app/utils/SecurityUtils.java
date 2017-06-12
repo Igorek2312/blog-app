@@ -5,6 +5,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 /**
  * Utility class for Spring Security.
  */
@@ -14,11 +17,11 @@ public final class SecurityUtils {
     }
 
     /**
-     * Get the login of the current user.
+     * Get the username of the current user.
      *
-     * @return the login of the current user
+     * @return the username of the current user
      */
-    public static String getCurrentUserLogin() {
+    public static String getCurrentUsername() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         String userName = null;
@@ -31,6 +34,24 @@ public final class SecurityUtils {
             }
         }
         return userName;
+    }
+
+    /**
+     * Get the username of the current user.
+     *
+     * @return the username of the current user
+     */
+    public static <T> Optional<T> getCurrentUser(Class<T> clazz) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        T casted = null;
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (clazz.isInstance(principal)) {
+                casted = clazz.cast(principal);
+            }
+        }
+        return Optional.ofNullable(casted);
     }
 
     /**
@@ -64,5 +85,9 @@ public final class SecurityUtils {
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
         }
         return false;
+    }
+
+    public static boolean isCurrentUserOwner(Function<String, Boolean> isOwner) {
+        return isOwner.apply(getCurrentUsername());
     }
 }

@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.web;
+package com.github.igorek2312.blog.app.web.user;
 
 import com.github.igorek2312.blog.app.model.User;
 import com.github.igorek2312.blog.app.services.AccountService;
@@ -8,11 +8,10 @@ import com.github.igorek2312.blog.app.transfer.SendResetPasswordLetterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -22,16 +21,16 @@ import java.util.Optional;
  */
 @Controller
 public class ResetPasswordController {
-    private AccountService accountService;
-    private EmailService emailService;
+    private final AccountService accountService;
+    private final EmailService emailService;
+
 
     @Autowired
-    public void setAccountService(AccountService accountService) {
+    public ResetPasswordController(
+            AccountService accountService,
+            EmailService emailService
+    ) {
         this.accountService = accountService;
-    }
-
-    @Autowired
-    public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
     }
 
@@ -48,7 +47,7 @@ public class ResetPasswordController {
     @GetMapping("/send-reset-password-letter")
     public String getSendResetPasswordLetter(
     ) {
-        return "send-reset-password-letter";
+        return "user/send-reset-password-letter";
     }
 
     @PostMapping("/send-reset-password-letter")
@@ -58,7 +57,7 @@ public class ResetPasswordController {
             HttpServletRequest request
     ) {
         if (bindingResult.hasErrors()) {
-            return "send-reset-password-letter";
+            return "user/send-reset-password-letter";
         }
 
         Optional<User> userOptional = accountService.getUser(form.getEmail());
@@ -70,13 +69,13 @@ public class ResetPasswordController {
             return "redirect:/send-reset-password-letter?letter_sent";
         }
 
-        bindingResult.rejectValue("email", "NoUserWithSuchEmail");
-        return "send-reset-password-letter";
+        bindingResult.rejectValue("email", "NotExists.user.email");
+        return "user/send-reset-password-letter";
     }
 
     @GetMapping("/reset-password")
     public String getResetPassword() {
-        return "reset-password";
+        return "user/reset-password";
     }
 
     @PostMapping("/reset-password")
@@ -85,7 +84,7 @@ public class ResetPasswordController {
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            return "reset-password";
+            return "user/reset-password";
         }
 
         accountService.resetPassword(

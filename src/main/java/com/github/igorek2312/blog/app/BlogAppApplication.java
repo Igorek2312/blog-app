@@ -2,12 +2,21 @@ package com.github.igorek2312.blog.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.PropertySource;
 
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
 @SpringBootApplication
-@PropertySource(value = "application-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
+@EntityScan(
+        basePackages = {
+                "org.springframework.data.jpa.convert.threeten",
+                "com.github.igorek2312.blog.app.model"
+        }
+)
 public class BlogAppApplication extends SpringBootServletInitializer {
 
     @Override
@@ -16,6 +25,7 @@ public class BlogAppApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SpringApplication.run(BlogAppApplication.class, args);
     }
 }

@@ -97,6 +97,10 @@ public class User implements ConfirmPassword {
         passwordHash = encoder.apply(password);
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public boolean isConfirmedPasswordValid() {
         return password.equals(confirmedPassword);

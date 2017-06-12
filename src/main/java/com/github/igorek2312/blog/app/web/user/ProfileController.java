@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.web;
+package com.github.igorek2312.blog.app.web.user;
 
 import com.github.igorek2312.blog.app.utils.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -13,8 +13,8 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String profile(Model model) {
-        model.addAttribute("username", SecurityUtils.getCurrentUserLogin());
-        return "profile";
+        model.addAttribute("username", SecurityUtils.getCurrentUsername());
+        return "user/profile";
     }
 
 }
