@@ -1,6 +1,7 @@
 package com.github.igorek2312.blog.app.web.user;
 
 import com.github.igorek2312.blog.app.model.User;
+import com.github.igorek2312.blog.app.services.StorageService;
 import com.github.igorek2312.blog.app.services.UserService;
 import com.github.igorek2312.blog.app.transfer.user.UpdateEmailForm;
 import com.github.igorek2312.blog.app.transfer.user.UpdateProfileForm;
@@ -14,16 +15,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 /**
  * @author Igor Rybak
  */
 @Controller
 public class ProfileController {
     private final UserService userService;
+    private final StorageService storageService;
 
     @Autowired
-    public ProfileController(UserService userService) {
+    public ProfileController(UserService userService, StorageService storageService) {
         this.userService = userService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/my-profile")
@@ -46,6 +51,7 @@ public class ProfileController {
     }
 
     @GetMapping("/edit-my-profile")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getProfileToEdit(Model model) {
         String username = SecurityUtils.getCurrentUsername();
         User user = userService.getByUsername(username);
@@ -54,6 +60,7 @@ public class ProfileController {
     }
 
     @PostMapping("/update-email")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String updateEmail(
             @ModelAttribute("user") @Validated UpdateEmailForm form,
             BindingResult result
@@ -66,6 +73,7 @@ public class ProfileController {
     }
 
     @PostMapping("/update-profile")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String updateProfile(
             @ModelAttribute("user") @Validated UpdateProfileForm form,
             BindingResult result
@@ -78,7 +86,15 @@ public class ProfileController {
     }
 
     @PostMapping("/change-profile-image")
-    public String changeProfileImage(@RequestParam("file") MultipartFile file){
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String changeProfileImage(@RequestParam("file") MultipartFile file) throws IOException {
+        String url = storageService.save(file);
+
+        String username = SecurityUtils.getCurrentUsername();
+        userService.getImageUrl(username)
+                .ifPresent(storageService::deleteImageByUrl);
+
+        userService.changeUserImageUrl(url,username);
         return "redirect:/edit-my-profile";
     }
 }

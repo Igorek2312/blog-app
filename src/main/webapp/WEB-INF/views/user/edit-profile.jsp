@@ -5,9 +5,11 @@
 <t:layout>
     <div class="col-sm-5">
         <label for="profile-image" class="thumbnail">
-            <img src="${user.imageUrl}" alt="no image">
+            <img src="${user.imageUrl}" alt="no image" height="200">
         </label>
-        <input id="profile-image" style="display:none;" type="file"/>
+        <form:form id="profile-image-form" action="/change-profile-image" method="post" enctype="multipart/form-data">
+            <input name="file" id="profile-image" style="display:none;" type="file"/>
+        </form:form>
     </div>
     <div class="col-sm-5">
         <form:form modelAttribute="user" action="/update-email" method="post" cssClass="form-horizontal">

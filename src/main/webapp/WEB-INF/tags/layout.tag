@@ -92,6 +92,7 @@
 
 <script src="/js/utc-converter.js"></script>
 <script src="/js/tiny-mce-config.js"></script>
+<script src="/js/main.js"></script>
 </body>
 </html>
 

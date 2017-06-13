@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("update User u set u.firstName=:firstName,u.lastName=:lastName where u.username=:username")
     @Modifying
-    void save(
+    void update(
             @Param("username") String username,
             @Param("firstName") String firstName,
             @Param("lastName") String lastName
@@ -34,5 +35,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("update User u set u.email=:email where u.username=:username")
     @Modifying
-    void save( @Param("username") String username,  @Param("email") String email);
+    void update(@Param("username") String username, @Param("email") String email);
+
+    @Query("update User u set u.imageUrl=:url where u.username=:username")
+    @Modifying
+    void updateImageUrl(@Param("url") String url, @Param("username") String username);
+
+    @Query("select u.imageUrl from User u where u.username=:username")
+    List<String> findImageUrlByUserName(@Param("username") String username);
 }

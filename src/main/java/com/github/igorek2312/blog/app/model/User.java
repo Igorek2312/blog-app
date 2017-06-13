@@ -90,6 +90,7 @@ public class User implements ConfirmPassword {
         this.activated = user.activated;
         this.firstName = user.firstName;
         this.lastName = user.lastName;
+        this.imageUrl = user.imageUrl;
         this.roles = user.roles;
     }
 

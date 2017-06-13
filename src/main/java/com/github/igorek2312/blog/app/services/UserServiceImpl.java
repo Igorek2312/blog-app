@@ -8,6 +8,8 @@ import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * @author Igor Rybak
  */
@@ -31,11 +33,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findOne(userId);
     }
 
+    @Override
+    public Optional<String> getImageUrl(String username) {
+        return userRepository.findImageUrlByUserName(username)
+                .stream()
+                .findFirst();
+    }
+
     @Transactional
     @Override
     public void update(String firstName, String lastName) {
         String username = SecurityUtils.getCurrentUsername();
-        userRepository.save(
+        userRepository.update(
                 username,
                 firstName,
                 lastName
@@ -46,9 +55,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateEmail(String email) {
         String username = SecurityUtils.getCurrentUsername();
-        userRepository.save(
+        userRepository.update(
                 username,
                 email
         );
+    }
+
+    @Transactional
+    @Override
+    public void changeUserImageUrl(String url, String username) {
+        userRepository.updateImageUrl(url, username);
     }
 }

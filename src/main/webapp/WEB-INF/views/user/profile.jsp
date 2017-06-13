@@ -5,7 +5,7 @@
 <t:layout>
     <div class="col-sm-5">
         <div class="thumbnail">
-            <img src="${user.imageUrl}" alt="no image">
+            <img src="${user.imageUrl}" alt="no image" height="200">
         </div>
     </div>
     <div class="col-sm-7">
