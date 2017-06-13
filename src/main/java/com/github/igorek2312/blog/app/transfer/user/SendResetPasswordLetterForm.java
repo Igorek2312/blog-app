@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.transfer;
+package com.github.igorek2312.blog.app.transfer.user;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;

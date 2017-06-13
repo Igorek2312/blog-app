@@ -3,3 +3,7 @@
     display: block;
     margin: 0 auto;
 }
+
+label[for='profile-image']{
+    cursor: pointer;
+}

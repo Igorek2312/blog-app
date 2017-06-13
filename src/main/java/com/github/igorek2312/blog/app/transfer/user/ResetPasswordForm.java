@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.transfer;
+package com.github.igorek2312.blog.app.transfer.user;
 
 import com.github.igorek2312.blog.app.services.validation.ConfirmPasswordConstraint;
 import org.hibernate.validator.constraints.Length;

@@ -36,7 +36,7 @@
             <sec:authorize access="isAuthenticated()">
                 <li class="<%=request.getRequestURI().equals("/WEB-INF/views/user/profile.jsp")?"active":""%>">
                     <spring:message code="label.profile" var="profile"/>
-                    <a href="/profile" data-toggle="tooltip" title="${profile}">
+                    <a href="/my-profile" data-toggle="tooltip" title="${profile}">
                         <i class="fa fa-user"></i>
                         <sec:authentication property="principal.fullName"/>
                     </a>
@@ -88,6 +88,7 @@
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 <script src="/webjars/momentjs/2.18.1/min/moment.min.js"></script>
 <script src="/webjars/tinymce/4.5.6/tinymce.min.js"></script>
+<%--<script src="/webjars/jquery-file-upload/9.10.1/js/jquery.fileupload.js"></script>--%>
 
 <script src="/js/utc-converter.js"></script>
 <script src="/js/tiny-mce-config.js"></script>

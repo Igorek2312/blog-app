@@ -2,6 +2,7 @@ package com.github.igorek2312.blog.app.utils;
 
 
 import com.github.igorek2312.blog.app.error.NotFoundException;
+
 import java.util.function.Function;
 
 /**

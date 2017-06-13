@@ -4,7 +4,7 @@ import com.github.igorek2312.blog.app.reference.Constants;
 import com.github.igorek2312.blog.app.services.validation.ConfirmPasswordConstraint;
 import com.github.igorek2312.blog.app.services.validation.UniqueEmail;
 import com.github.igorek2312.blog.app.services.validation.UniqueUsername;
-import com.github.igorek2312.blog.app.transfer.ConfirmPassword;
+import com.github.igorek2312.blog.app.transfer.user.ConfirmPassword;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -103,7 +103,7 @@ public class User implements ConfirmPassword {
 
     @Override
     public boolean isConfirmedPasswordValid() {
-        return password.equals(confirmedPassword);
+        return (password == null && confirmedPassword == null) || password.equals(confirmedPassword);
     }
 
     public Integer getId() {

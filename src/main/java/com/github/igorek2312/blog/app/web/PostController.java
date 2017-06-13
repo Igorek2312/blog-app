@@ -5,6 +5,7 @@ import com.github.igorek2312.blog.app.model.Post;
 import com.github.igorek2312.blog.app.model.User;
 import com.github.igorek2312.blog.app.services.CommentService;
 import com.github.igorek2312.blog.app.services.PostService;
+import com.github.igorek2312.blog.app.services.UserService;
 import com.github.igorek2312.blog.app.transfer.PostListItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,11 +31,13 @@ import static com.github.igorek2312.blog.app.utils.SecurityUtils.isCurrentUserOw
 public class PostController {
     private final PostService postService;
     private final CommentService commentService;
+    private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService, CommentService commentService) {
+    public PostController(PostService postService, CommentService commentService, UserService userService) {
         this.postService = postService;
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     private void initModel(Model model, int postId, Pageable pageable) {
@@ -73,6 +76,8 @@ public class PostController {
     ) {
         Page<PostListItem> posts = postService.getByUserId(userId, pageable);
         model.addAttribute("posts", posts);
+        User user = userService.getById(userId);
+        model.addAttribute("user", user);
 
         Boolean isOwner = getCurrentUser(User.class)
                 .map(User::getId)
@@ -160,7 +165,7 @@ public class PostController {
     @GetMapping("/posts/{postId}/delete-comment/{commentId}")
     public String deleteComment(
             @PathVariable int commentId
-    ){
+    ) {
         commentService.deleteComment(commentId);
         return "redirect:/posts/{postId}";
     }

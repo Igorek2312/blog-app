@@ -1,6 +1,6 @@
 package com.github.igorek2312.blog.app.services.validation;
 
-import com.github.igorek2312.blog.app.transfer.ConfirmPassword;
+import com.github.igorek2312.blog.app.transfer.user.ConfirmPassword;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

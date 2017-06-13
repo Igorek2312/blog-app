@@ -3,16 +3,20 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <t:layout>
-    <c:if test="${isCurrentUserOwner}">
-        <a href="/create-post">
-            <button class="btn btn-lg btn-primary">
-                <spring:message code="label.new.post"/>
-            </button>
-        </a>
-    </c:if>
+    <h2>
+        <spring:message code="label.posts.of.author" arguments="${user.fullName}"/>
+        <c:if test="${isCurrentUserOwner}">
+            <a href="/create-post">
+                <button class="btn btn-lg btn-primary">
+                    <spring:message code="label.new.post"/>
+                </button>
+            </a>
+        </c:if>
+    </h2>
+    <hr>
 
     <c:forEach var="post" items="${posts.content}">
-        <hr>
+
         <div class="col-sm-12">
             <a href="/posts/${post.id}">
                 <h3>${post.title}</h3>
@@ -40,5 +44,4 @@
             </div>
         </div>
     </c:if>
-
 </t:layout>
