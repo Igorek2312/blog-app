@@ -35,9 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<String> getImageUrl(String username) {
-        return userRepository.findImageUrlByUserName(username)
-                .stream()
-                .findFirst();
+        return userRepository.findImageUrlByUserName(username);
     }
 
     @Transactional

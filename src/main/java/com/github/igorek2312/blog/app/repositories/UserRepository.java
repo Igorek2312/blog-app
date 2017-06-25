@@ -42,5 +42,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateImageUrl(@Param("url") String url, @Param("username") String username);
 
     @Query("select u.imageUrl from User u where u.username=:username")
-    List<String> findImageUrlByUserName(@Param("username") String username);
+    Optional<String> findImageUrlByUserName(@Param("username") String username);
 }

@@ -40,6 +40,7 @@ public class AccountServiceImpl implements AccountService {
         user.encodePassword(passwordEncoder::encode);
         user.setActivationKey(UUID.randomUUID().toString());
         user.getRoles().add(role);
+        user.setImageUrl("/images/default.png");
         userRepository.saveAndFlush(user);
     }
 
