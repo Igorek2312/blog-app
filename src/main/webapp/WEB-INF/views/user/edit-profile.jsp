@@ -8,7 +8,7 @@
             <img src="${user.imageUrl}" alt="no image" height="200">
         </label>
         <form:form id="profile-image-form" action="/change-profile-image" method="post" enctype="multipart/form-data">
-            <input name="file" id="profile-image" style="display:none;" type="file"/>
+            <input name="file" id="profile-image" style="display:none" type="file"/>
         </form:form>
     </div>
     <div class="col-sm-5">

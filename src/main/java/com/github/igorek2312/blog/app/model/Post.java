@@ -34,6 +34,12 @@ public class Post implements PostOwner {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public Post() {
+    }
+
+    public Post(Integer id) {
+        this.id = id;
+    }
 
     @Override
     public boolean isUserPostOwner(String username) {

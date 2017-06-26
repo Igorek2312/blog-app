@@ -1,9 +1,9 @@
 package com.github.igorek2312.blog.app.model;
 
 import com.github.igorek2312.blog.app.reference.Constants;
-import com.github.igorek2312.blog.app.services.validation.ConfirmPasswordConstraint;
-import com.github.igorek2312.blog.app.services.validation.UniqueEmail;
-import com.github.igorek2312.blog.app.services.validation.UniqueUsername;
+import com.github.igorek2312.blog.app.service.validation.ConfirmPasswordConstraint;
+import com.github.igorek2312.blog.app.service.validation.UniqueEmail;
+import com.github.igorek2312.blog.app.service.validation.UniqueUsername;
 import com.github.igorek2312.blog.app.transfer.user.ConfirmPassword;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;

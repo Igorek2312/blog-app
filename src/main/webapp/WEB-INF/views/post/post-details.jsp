@@ -15,6 +15,19 @@
     <c:if test="${isCurrentUserOwner}">
         <div class="row">
             <div class="col-sm-12">
+                <c:if test="${!empty images}">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <c:forEach var="image" items="${images}">
+                                    <div class="col-sm-3">
+                                        <img src="${image.fileUrl}" alt="" style="width:100%"/>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
                 <hr>
                 <a href="/edit-post/${post.id}">
                     <button class="btn btn-primary">
@@ -26,7 +39,31 @@
                         <i class="fa fa-trash"></i>
                     </button>
                 </a>
+                <label for="attache-file" class="btn btn-primary">
+                    <spring:message code="label.attach.file"/>
+                </label>
+                <form:form id="attache-file-form" action="/posts/${post.id}/attach-file" method="post"
+                           enctype="multipart/form-data">
+                    <input name="file" id="attache-file" style="display:none;" type="file"/>
+                </form:form>
                 <hr>
+            </div>
+        </div>
+    </c:if>
+
+    <c:if test="${!empty files}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <c:forEach var="file" items="${files}">
+                    <a href="${file.fileUrl}">${file.fileUrl}</a>
+                    <c:if test="${isCurrentUserOwner}">
+                        <a href="/posts/${post.id}/delete-attached-file/${file.id}">
+                            <button class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </a>
+                    </c:if>
+                </c:forEach>
             </div>
         </div>
     </c:if>
@@ -68,7 +105,6 @@
             <div class="col-sm-12">
                 <h4><spring:message code="label.comments"/></h4>
                 <c:forEach var="comment" items="${comments.content}">
-                    <hr>
                     <strong>${comment.content}</strong> <br>
                     <span class="text-muted">
                         <spring:message code="label.commented" arguments="${comment.user.fullName}"/>

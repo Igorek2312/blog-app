@@ -1,6 +1,7 @@
 tinymce.init({
     selector: '.content-textarea',
     height: 100,
+    paste_data_images: true,
     plugins: [
         'advlist autolink lists link image charmap print preview anchor',
         'searchreplace visualblocks code fullscreen',

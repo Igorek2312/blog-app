@@ -1,11 +1,10 @@
 package com.github.igorek2312.blog.app.web;
 
+import com.github.igorek2312.blog.app.model.Attachment;
 import com.github.igorek2312.blog.app.model.Comment;
 import com.github.igorek2312.blog.app.model.Post;
 import com.github.igorek2312.blog.app.model.User;
-import com.github.igorek2312.blog.app.services.CommentService;
-import com.github.igorek2312.blog.app.services.PostService;
-import com.github.igorek2312.blog.app.services.UserService;
+import com.github.igorek2312.blog.app.service.*;
 import com.github.igorek2312.blog.app.transfer.PostListItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,10 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 import static com.github.igorek2312.blog.app.utils.SecurityUtils.getCurrentUser;
 import static com.github.igorek2312.blog.app.utils.SecurityUtils.isCurrentUserOwner;
@@ -32,12 +32,16 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
     private final UserService userService;
+    private final AttachmentService attachmentService;
+    private final StorageService storageService;
 
     @Autowired
-    public PostController(PostService postService, CommentService commentService, UserService userService) {
+    public PostController(PostService postService, CommentService commentService, UserService userService, AttachmentService attachmentService, StorageService storageService) {
         this.postService = postService;
         this.commentService = commentService;
         this.userService = userService;
+        this.attachmentService = attachmentService;
+        this.storageService = storageService;
     }
 
     private void initModel(Model model, int postId, Pageable pageable) {
@@ -48,6 +52,12 @@ public class PostController {
 
         Page<Comment> comments = commentService.getByPostId(postId, pageable);
         model.addAttribute("comments", comments);
+
+        List<Attachment> files = attachmentService.getFiles(postId);
+        List<Attachment> notImages = attachmentService.getNotImages(files);
+        List<Attachment> images = attachmentService.getImages(files);
+        model.addAttribute("files", notImages);
+        model.addAttribute("images", images);
     }
 
     @GetMapping("/posts/{postId}")
@@ -118,6 +128,10 @@ public class PostController {
     ) {
         Post post = postService.getById(postId);
         model.addAttribute("post", post);
+        List<Attachment> files = attachmentService.getFiles(postId);
+        List<Attachment> images = attachmentService.getImages(files);
+        model.addAttribute("images", images);
+
         return "post/edit-post";
     }
 
@@ -167,6 +181,41 @@ public class PostController {
             @PathVariable int commentId
     ) {
         commentService.deleteComment(commentId);
+        return "redirect:/posts/{postId}";
+    }
+
+    @PostMapping("/posts/{postId}/attach-file")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String attachFile(
+            @PathVariable int postId,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        String fileUrl = storageService.save(file);
+        attachmentService.create(fileUrl, postId);
+        return "redirect:/posts/{postId}";
+    }
+
+    private void deleteAttachment(@PathVariable int attachmentId) {
+        String url = attachmentService.getUrl(attachmentId);
+        attachmentService.delete(attachmentId);
+        storageService.deleteImageByUrl(url);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/posts/{postId}/delete-attached-image/{attachmentId}")
+    public String deleteAttachedImage(
+            @PathVariable int attachmentId
+    ) {
+        deleteAttachment(attachmentId);
+        return "redirect:/edit-posts/{postId}";
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/posts/{postId}/delete-attached-file/{attachmentId}")
+    public String deleteAttachedFile(
+            @PathVariable int attachmentId
+    ) {
+        deleteAttachment(attachmentId);
         return "redirect:/posts/{postId}";
     }
 }

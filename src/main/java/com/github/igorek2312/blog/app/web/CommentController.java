@@ -1,7 +1,7 @@
 package com.github.igorek2312.blog.app.web;
 
-import com.github.igorek2312.blog.app.services.CommentService;
-import com.github.igorek2312.blog.app.services.PostService;
+import com.github.igorek2312.blog.app.service.CommentService;
+import com.github.igorek2312.blog.app.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

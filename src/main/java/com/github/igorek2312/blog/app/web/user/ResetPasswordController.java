@@ -1,8 +1,8 @@
 package com.github.igorek2312.blog.app.web.user;
 
 import com.github.igorek2312.blog.app.model.User;
-import com.github.igorek2312.blog.app.services.AccountService;
-import com.github.igorek2312.blog.app.services.EmailService;
+import com.github.igorek2312.blog.app.service.AccountService;
+import com.github.igorek2312.blog.app.service.EmailService;
 import com.github.igorek2312.blog.app.transfer.user.ResetPasswordForm;
 import com.github.igorek2312.blog.app.transfer.user.SendResetPasswordLetterForm;
 import org.springframework.beans.factory.annotation.Autowired;

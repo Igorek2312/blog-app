@@ -1,8 +1,8 @@
 package com.github.igorek2312.blog.app.web.user;
 
 import com.github.igorek2312.blog.app.model.User;
-import com.github.igorek2312.blog.app.services.StorageService;
-import com.github.igorek2312.blog.app.services.UserService;
+import com.github.igorek2312.blog.app.service.StorageService;
+import com.github.igorek2312.blog.app.service.UserService;
 import com.github.igorek2312.blog.app.transfer.user.UpdateEmailForm;
 import com.github.igorek2312.blog.app.transfer.user.UpdateProfileForm;
 import com.github.igorek2312.blog.app.utils.SecurityUtils;

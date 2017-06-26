@@ -1,6 +1,6 @@
 package com.github.igorek2312.blog.app.transfer.user;
 
-import com.github.igorek2312.blog.app.services.validation.UniqueEmail;
+import com.github.igorek2312.blog.app.service.validation.UniqueEmail;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 

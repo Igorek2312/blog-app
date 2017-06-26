@@ -6,7 +6,7 @@ import com.github.igorek2312.blog.app.error.NotFoundException;
 import java.util.function.Function;
 
 /**
- * A util class for generic operations with repositories.
+ * A util class for generic operations with repository.
  *
  * @author Igor Rybak
  */

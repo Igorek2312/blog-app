@@ -1,7 +1,7 @@
 package com.github.igorek2312.blog.app.config;
 
 import com.github.igorek2312.blog.app.model.User;
-import com.github.igorek2312.blog.app.repositories.UserRepository;
+import com.github.igorek2312.blog.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
