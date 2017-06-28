@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.web;
+package com.github.igorek2312.blog.app.web.post;
 
 import com.github.igorek2312.blog.app.model.Attachment;
 import com.github.igorek2312.blog.app.model.Comment;
@@ -71,6 +71,16 @@ public class PostController {
         return "post/post-details";
     }
 
+    @GetMapping("/posts")
+    public String getPosts(
+            Model model,
+            Pageable pageable
+    ) {
+        Page<PostListItem> posts = postService.getAll(pageable);
+        model.addAttribute("posts", posts);
+        return "post/all-posts";
+    }
+
     @GetMapping("/my-posts")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getMyPosts() {
@@ -121,35 +131,6 @@ public class PostController {
         return "redirect:/my-posts";
     }
 
-    @GetMapping("/edit-post/{postId}")
-    public String getEditPostForm(
-            @PathVariable int postId,
-            Model model
-    ) {
-        Post post = postService.getById(postId);
-        model.addAttribute("post", post);
-        List<Attachment> files = attachmentService.getFiles(postId);
-        List<Attachment> images = attachmentService.getImages(files);
-        model.addAttribute("images", images);
-
-        return "post/edit-post";
-    }
-
-    @PostMapping("/edit-post/{postId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String editPost(
-            @PathVariable int postId,
-            @ModelAttribute("post") @Validated Post post,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            post.setId(postId);
-            return "post/edit-post";
-        }
-
-        postService.update(postId, post);
-        return "redirect:/edit-post/{postId}";
-    }
 
     @GetMapping("/delete-post/{postId}")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -195,27 +176,14 @@ public class PostController {
         return "redirect:/posts/{postId}";
     }
 
-    private void deleteAttachment(@PathVariable int attachmentId) {
-        String url = attachmentService.getUrl(attachmentId);
-        attachmentService.delete(attachmentId);
-        storageService.deleteImageByUrl(url);
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/posts/{postId}/delete-attached-image/{attachmentId}")
-    public String deleteAttachedImage(
-            @PathVariable int attachmentId
-    ) {
-        deleteAttachment(attachmentId);
-        return "redirect:/edit-posts/{postId}";
-    }
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/posts/{postId}/delete-attached-file/{attachmentId}")
     public String deleteAttachedFile(
             @PathVariable int attachmentId
     ) {
-        deleteAttachment(attachmentId);
+        String url = attachmentService.getUrl(attachmentId);
+        attachmentService.delete(attachmentId);
+        storageService.deleteImageByUrl(url);
         return "redirect:/posts/{postId}";
     }
 }

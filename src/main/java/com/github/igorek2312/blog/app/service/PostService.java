@@ -15,6 +15,8 @@ public interface PostService {
 
     Page<PostListItem> getByUserId(int userId, Pageable pageable);
 
+    Page<PostListItem> getAll(Pageable pageable);
+
     void create(Post post);
 
     void update(int postId, Post post);

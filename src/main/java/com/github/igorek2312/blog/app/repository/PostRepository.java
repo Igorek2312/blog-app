@@ -14,10 +14,18 @@ import org.springframework.data.repository.query.Param;
  */
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    @Query("select new com.github.igorek2312.blog.app.transfer.PostListItem(p.id,p.title,p.dateTimePublished) from Post p where " +
+    @Query("select " +
+            "new com.github.igorek2312.blog.app.transfer.PostListItem(p.id,p.title,p.dateTimePublished,concat(p.user.firstName,' ',p.user.lastName),p.user.username) " +
+            "from Post p where " +
             "p.user.id=:userId " +
             "order by p.dateTimePublished desc")
     Page<PostListItem> findByUserId(@Param("userId") int userId, Pageable pageable);
+
+    @Query("select " +
+            "new com.github.igorek2312.blog.app.transfer.PostListItem(p.id,p.title,p.dateTimePublished,concat(p.user.firstName,' ',p.user.lastName),p.user.username) " +
+            "from Post p " +
+            "order by p.dateTimePublished desc")
+    Page<PostListItem> findAllPosts(Pageable pageable);
 
     @Query("update Post set title=:title, content=:content where id=:postId")
     @Modifying

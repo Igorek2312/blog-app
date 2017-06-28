@@ -45,6 +45,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Page<PostListItem> getAll(Pageable pageable) {
+        return postRepository.findAllPosts(pageable);
+    }
+
+    @Override
     public void create(Post post) {
         String username = SecurityUtils.getCurrentUsername();
         userRepository.findByUsername(username).ifPresent(post::setUser);

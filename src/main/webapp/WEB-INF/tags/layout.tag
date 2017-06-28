@@ -66,13 +66,16 @@
         </ul>
         <ul class="nav navbar-nav">
             <sec:authorize access="isAnonymous()">
-                <li class="<%=request.getRequestURI().equals("/WEB-INF/views/user/login.jsp")?"active":""%>">
-                    <a href="/login"><spring:message code="label.log.in"/></a>
+                <li data-toggle="modal" data-target="#login-modal">
+                    <a><spring:message code="label.log.in"/></a>
                 </li>
                 <li class="<%=request.getRequestURI().equals("/WEB-INF/views/user/sign-up.jsp")?"active":""%>">
                     <a href="/sign-up"><spring:message code="label.sign.up"/></a>
                 </li>
             </sec:authorize>
+            <li class="<%=request.getRequestURI().equals("/WEB-INF/views/post/posts.jsp")?"active":""%>">
+                <a href="/posts"><spring:message code="label.posts"/></a>
+            </li>
             <li class="<%=request.getRequestURI().equals("/WEB-INF/views/about.jsp")?"active":""%>">
                 <a href="/about"><spring:message code="label.about"/></a>
             </li>
@@ -81,6 +84,7 @@
 </nav>
 
 <div class="container">
+    <jsp:include page="/WEB-INF/views/user/login.jsp"/>
     <jsp:doBody/>
 </div>
 
