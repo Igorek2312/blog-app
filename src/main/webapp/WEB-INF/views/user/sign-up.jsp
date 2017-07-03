@@ -90,6 +90,7 @@
                             <spring:message code="label.sign.up"/>
                         </button>
                     </form:form>
+                    <jsp:include page="social-sign-in.jsp"/>
                 </div>
             </div>
         </div>

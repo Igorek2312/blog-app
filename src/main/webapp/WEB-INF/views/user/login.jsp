@@ -13,7 +13,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <c:if test="${param.logout!=null}">
+                <c:if test="${param.logged_out!=null}">
                     <div class="alert alert-info">
                         <spring:message code="label.logged.out"/>
                     </div>
@@ -64,6 +64,7 @@
                         <spring:message code="label.log.in"/>
                     </button>
                 </form:form>
+                <jsp:include page="social-sign-in.jsp"/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -71,5 +72,4 @@
         </div>
     </div>
 </div>
-
 

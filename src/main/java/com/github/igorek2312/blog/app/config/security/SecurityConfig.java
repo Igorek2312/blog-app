@@ -1,4 +1,4 @@
-package com.github.igorek2312.blog.app.config;
+package com.github.igorek2312.blog.app.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -53,11 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/my-profile")
                     .usernameParameter("username")
                     .passwordParameter("password")
-                    .failureUrl("/login?error")
+                    .failureUrl("/?login&error")
                 .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/?login&logged_out").deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true);
 
     }
